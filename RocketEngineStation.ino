@@ -1,6 +1,13 @@
-void setup() {
-  // put your setup code here, to run once:
 
+extern int Mode = 0;
+
+
+
+
+void setup() {
+  Serial.begin(9600);
+  DisplayBeninging();
+  ChoseMode();
 }
 
 void loop() {

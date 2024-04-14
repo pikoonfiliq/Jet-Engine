@@ -1,7 +1,6 @@
 #include <LCD-I2C.h>
 
-LCD_I2C lcd(0x27, 20, 4); //Initialising LCD
-//This is for storing the 2 custom symbols that are 2x2
+LCD_I2C lcd(0x27, 20, 4);
 byte CustomPictures[][8] = {
   //fire symbol
   { B00000, B00010, B00011, B00011, B00111, B00111, B00111, B01111 },
@@ -16,11 +15,10 @@ byte CustomPictures[][8] = {
 };
 
 void DisplaySetup() {
-  //initing the LCD
+  //inniting the LCD
   lcd.begin();
   lcd.display();
   lcd.backlight();
-  //setting up the custom characters
   for(int i = 0;i<8;i++){
     lcd.createChar(i, CustomPictures[i]);
   }
@@ -28,24 +26,50 @@ void DisplaySetup() {
 
 void DisplayBeninging() {
   DisplaySetup();
-  //Title
   lcd.setCursor(3, 0);
   lcd.print("Engine testing");
   lcd.setCursor(7, 1);
   lcd.print("station");
-  //the top row
+
   lcd.setCursor(16, 2);
   lcd.write(0);
   lcd.write(1);
   lcd.write(4);
   lcd.write(5);
-  //the bottom row
+
   lcd.setCursor(16, 3);
   lcd.write(2);
   lcd.write(3);
   lcd.write(6);
   lcd.write(7);
-  //end of the start up screen
-  delay(2000);
+
+  delay(2500);
   lcd.clear();
+}
+
+void DisplayChooseMenu(int selectFlag){
+  lcd.setCursor(0, 0);
+  lcd.print("Choose setting:");
+  lcd.setCursor(0, 1);
+  if(Mode == 0){
+    lcd.print(">");
+  }else{
+    lcd.print(" ");
+  }
+  lcd.print("Manual");
+  lcd.setCursor(0, 2);
+  if(Mode == 1){
+    lcd.print(">");
+  }else{
+    lcd.print(" ");
+  }
+  lcd.print("Autopilot");
+  if(selectFlag == 1){
+    lcd.setCursor(0, 3);
+    lcd.print("Mode selected");
+    delay(1000);
+    lcd.clear();
+  }
+  delay(100);
+  
 }

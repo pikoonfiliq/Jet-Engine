@@ -1,16 +1,22 @@
-
 extern int Mode = 0;
 
-
+extern int Temperature = 0;
+extern int Thrust = 0;
+extern int AirVal = 0;
+extern int GasVal = 0;
+extern bool Start = false;
+extern int Status = 0;
+extern int SpeedVal = 0;
 
 
 void setup() {
-  Serial.begin(9600);
   DisplayBeninging();
   ChoseMode();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  GetControls();
+  GetSensors();
+  DisplayMainMenu();
+  ControlEngine();
 }

@@ -19,7 +19,7 @@ void DisplaySetup() {
   lcd.begin();
   lcd.display();
   lcd.backlight();
-  for(int i = 0;i<8;i++){
+  for (int i = 0; i < 8; i++) {
     lcd.createChar(i, CustomPictures[i]);
   }
 }
@@ -47,29 +47,104 @@ void DisplayBeninging() {
   lcd.clear();
 }
 
-void DisplayChooseMenu(int selectFlag){
+void DisplayChooseMenu(int selectFlag) {
   lcd.setCursor(0, 0);
   lcd.print("Choose setting:");
   lcd.setCursor(0, 1);
-  if(Mode == 0){
+  if (Mode == 0) {
     lcd.print(">");
-  }else{
+  } else {
     lcd.print(" ");
   }
   lcd.print("Manual");
   lcd.setCursor(0, 2);
-  if(Mode == 1){
+  if (Mode == 1) {
     lcd.print(">");
-  }else{
+  } else {
     lcd.print(" ");
   }
   lcd.print("Autopilot");
-  if(selectFlag == 1){
+  if (selectFlag == 1) {
     lcd.setCursor(0, 3);
     lcd.print("Mode selected");
     delay(1000);
     lcd.clear();
   }
   delay(100);
-  
+
+}
+
+void DisplayMainMenu() {
+  lcd.setCursor(0, 0);
+  lcd.print("Mode: ");
+  switch (Mode)
+  {
+    case 0:
+      lcd.print("Manual");
+      break;
+
+    case 1:
+      lcd.print("Autopilot");
+      break;
+
+    default:
+      lcd.print("Error");
+      break;
+  }
+  lcd.setCursor(0, 1);
+  lcd.print("Status: ");
+  switch (Status)
+  {
+    case 0:
+      lcd.print("Off");
+      break;
+    case 1:
+      lcd.print("Starting up");
+      break;
+    case 2:
+      lcd.print("On");
+      break;
+    case 3:
+      lcd.print("Cooling off");
+      break;
+    default:
+      lcd.print("Error");
+      break;
+  }
+  lcd.setCursor(0, 2);
+  switch (Mode)
+  {
+    case 0:
+      DisplayManual();
+      break;
+    case 1:
+      DisplayAuto();
+      break;
+    default:
+      lcd.print("Controls Error");
+      break;
+  }
+  lcd.setCursor(0, 3);
+  lcd.print("Tem:");
+  lcd.print(Temperature);
+  lcd.setCursor(9, 3);
+  lcd.print("Thr:");
+  lcd.print(Thrust);
+}
+
+void DisplayManual() {
+  lcd.setCursor(0, 2);
+  lcd.print("Gas:");
+  lcd.print(GasVal);
+  lcd.print("%");
+  lcd.setCursor(9, 2);
+  lcd.print("Air:");
+  lcd.print(AirVal);
+  lcd.print("%");
+}
+void DisplayAuto() {
+lcd.setCursor(0, 2);
+  lcd.print("Speed:");
+  lcd.print(SpeedVal);
+  lcd.print("%");
 }

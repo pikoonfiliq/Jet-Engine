@@ -1,7 +1,4 @@
-#include <Servo.h>
-
 extern int Mode = 0;
-
 extern int Temperature = 0;
 extern int PullForce = 0;
 extern int AirVal = 0;
@@ -13,7 +10,6 @@ extern int SpeedVal = 0;
 
 
 void setup() {
-  Serial.begin(9600);
   PinsINIT();
   DisplayBeninging();
   ChoseMode();

@@ -71,14 +71,12 @@ void DisplayChooseMenu(int selectFlag) {
     lcd.clear();
   }
   delay(100);
-
 }
 
 void DisplayMainMenu() {
   lcd.setCursor(0, 0);
   lcd.print("Mode: ");
-  switch (Mode)
-  {
+  switch (Mode) {
     case 0:
       lcd.print("Manual");
       break;
@@ -93,27 +91,25 @@ void DisplayMainMenu() {
   }
   lcd.setCursor(0, 1);
   lcd.print("Status: ");
-  switch (Status)
-  {
+  switch (Stage) {
     case 0:
-      lcd.print("Off");
+      lcd.print("Off        ");
       break;
     case 1:
       lcd.print("Starting up");
       break;
     case 2:
-      lcd.print("On");
+      lcd.print("On         ");
       break;
     case 3:
       lcd.print("Cooling off");
       break;
     default:
-      lcd.print("Error");
+      lcd.print("Error      ");
       break;
   }
-  lcd.setCursor(0, 2);
-  switch (Mode)
-  {
+
+  switch (Mode) {
     case 0:
       DisplayManual();
       break;
@@ -124,27 +120,39 @@ void DisplayMainMenu() {
       lcd.print("Controls Error");
       break;
   }
+  String FieldVal1 = "Tem:" + String(Temperature) + char(0xDF) +"C";
+  for (int i = FieldVal1.length(); i < 10; i++) {
+    FieldVal1 += " ";
+  }
+  String FieldVal2 = "Thr:" + String(Thrust) + "kg";
+  for (int i = FieldVal2.length(); i < 10; i++) {
+    FieldVal2 += " ";
+  }
   lcd.setCursor(0, 3);
-  lcd.print("Tem:");
-  lcd.print(Temperature);
+  lcd.print(FieldVal1);
   lcd.setCursor(9, 3);
-  lcd.print("Thr:");
-  lcd.print(Thrust);
+  lcd.print(FieldVal2);
 }
 
 void DisplayManual() {
+  String FieldVal1 = "Gas:" + String(GasVal) + "%";
+  for (int i = FieldVal1.length(); i < 10; i++) {
+    FieldVal1 += " ";
+  }
+  String FieldVal2 = "Air:" + String(AirVal) + "%";
+  for (int i = FieldVal2.length(); i < 10; i++) {
+    FieldVal2 += " ";
+  }
   lcd.setCursor(0, 2);
-  lcd.print("Gas:");
-  lcd.print(GasVal);
-  lcd.print("%");
+  lcd.print(FieldVal1);
   lcd.setCursor(9, 2);
-  lcd.print("Air:");
-  lcd.print(AirVal);
-  lcd.print("%");
+  lcd.print(FieldVal2);
 }
 void DisplayAuto() {
-lcd.setCursor(0, 2);
-  lcd.print("Speed:");
-  lcd.print(SpeedVal);
-  lcd.print("%");
+  String FieldVal = "Speed:" + String(SpeedVal) + "%";
+  for (int i = FieldVal.length(); i < 20; i++) {
+    FieldVal += " ";
+  }
+  lcd.setCursor(0, 2);
+  lcd.print(FieldVal);
 }

@@ -124,7 +124,7 @@ void DisplayMainMenu() {
   for (int i = FieldVal1.length(); i < 10; i++) {
     FieldVal1 += " ";
   }
-  String FieldVal2 = "Thr:" + String(Thrust) + "kg";
+  String FieldVal2 = "Pul:" + String(PullForce) + "kg";
   for (int i = FieldVal2.length(); i < 10; i++) {
     FieldVal2 += " ";
   }

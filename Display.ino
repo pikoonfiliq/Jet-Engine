@@ -1,7 +1,7 @@
 #include <LCD-I2C.h>
 
 LCD_I2C lcd(0x27, 20, 4);
-byte CustomPictures[][8] = {
+byte CustomPictures[][8] = {//custom characters
   //fire symbol
   { B00000, B00010, B00011, B00011, B00111, B00111, B00111, B01111 },
   { B00000, B00000, B00000, B00000, B10000, B10100, B10100, B11100 },
@@ -19,12 +19,12 @@ void DisplaySetup() {
   lcd.begin();
   lcd.display();
   lcd.backlight();
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 8; i++) {//inniting all characters
     lcd.createChar(i, CustomPictures[i]);
   }
 }
 
-void DisplayBeninging() {
+void DisplayBeninging() {//velcome menu
   DisplaySetup();
   lcd.setCursor(3, 0);
   lcd.print("Engine testing");
@@ -47,7 +47,7 @@ void DisplayBeninging() {
   lcd.clear();
 }
 
-void DisplayChooseMenu(int selectFlag) {
+void DisplayChooseMenu(int selectFlag) {//chosing mode menu
   lcd.setCursor(0, 0);
   lcd.print("Choose setting:");
   lcd.setCursor(0, 1);
@@ -73,7 +73,7 @@ void DisplayChooseMenu(int selectFlag) {
   delay(100);
 }
 
-void DisplayMainMenu() {
+void DisplayMainMenu() {//main menu screen
   lcd.setCursor(0, 0);
   lcd.print("Mode: ");
   switch (Mode) {
@@ -133,7 +133,7 @@ void DisplayMainMenu() {
   lcd.setCursor(9, 3);
   lcd.print(FieldVal2);
 }
-
+//the controling values for each mode
 void DisplayManual() {
   String FieldVal1 = "Gas:" + String(GasVal) + "%";
   for (int i = FieldVal1.length(); i < 10; i++) {

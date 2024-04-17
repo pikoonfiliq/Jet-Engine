@@ -5,12 +5,12 @@ Servo GasServo;
 
 void ChoseMode() {
 
-  int Val = map(analogRead(A2), 0, 1020, 0, 100);
-  int oldVal = Val;
-  int direction = 0;
-  int Options = 2;
+  int Val = map(analogRead(A2), 0, 1020, 0, 100); //reading the potenciometer and mapping it 0-100
+  int oldVal = Val; // helper variable so we now wich direction is the potenciometer moving (basicaly making a budget rotary encoder)
+  int direction = 0; // the direction of the potenciometer
+  int Options = 2;  // maximum options to choose between
   while (1) {
-    Val = map(analogRead(A2), 0, 1020, 0, 50);
+    Val = map(analogRead(A2), 0, 1020, 0, 50);//reading the potenciometer and mapping it 0-50
     if (oldVal < Val) {
       //direction is up
       direction = 1;
@@ -22,13 +22,13 @@ void ChoseMode() {
       direction = 0;
     }
     oldVal = Val;
-    Mode += direction;
-    if (Mode < 0) {
+    Mode += direction;// getting the current position
+    if (Mode < 0) {//checks for the position limits
       Mode = 0;
     } else if (Mode >= Options) {
       Mode = Options - 1;
     }
-    if (digitalRead(12) == HIGH) {
+    if (digitalRead(12) == HIGH) {//if the select button is pressed we exit
       DisplayChooseMenu(1);
       return;
     }
@@ -37,13 +37,13 @@ void ChoseMode() {
 }
 
 void GetControls() {
-  if (!Start) {
+  if (!Start) {//waiting for the button to be pressed so we can start
     if (digitalRead(12) == HIGH) {
       Start = true;
       return;
     }
   }
-  switch (Mode) {
+  switch (Mode) {// controls based on the chosen mode
     case 0:
       GetControlsMan();
       break;
@@ -56,15 +56,15 @@ void GetControls() {
   }
 }
 
-void GetControlsMan() {
+void GetControlsMan() {//reading the 2 potenciometers that control gas and air flow
   GasVal = map(analogRead(A2), 0, 1020, 0, 100);
   AirVal = map(analogRead(A3), 0, 1020, 0, 100);
 }
-void GetControlsAut() {
+void GetControlsAut() {//reading the 1 potenciometers that control speed of the engine (this engine is controlled only with the air)
   SpeedVal = map(analogRead(A3), 0, 1020, 0, 100);
 }
 
-void ControlEngine() {
+void ControlEngine() {// controling the engine based on the chosen mode
   switch (Mode) {
     case 0:
       ControlEngineMan();
@@ -78,19 +78,19 @@ void ControlEngine() {
   }
 }
 
-void PinsINIT() {
-  GasServo.attach(9);
-  AirServo.attach(10);
+void PinsINIT() {//initing the pins
+  GasServo.attach(9);//servo 1
+  AirServo.attach(10);//sevor 2
   GasServo.write(0);
   AirServo.write(0);
-  pinMode(12, INPUT);
-  pinMode(7, OUTPUT);
+  pinMode(12, INPUT);//Sellect button
+  pinMode(7, OUTPUT);//relay pin
   pinMode(2, OUTPUT); //trigger pin
 	pinMode(3, INPUT);  //echo pin
 
 }
 
-void ControlEngineMan() {
+void ControlEngineMan() {//basic manual controls
   if (digitalRead(12) == HIGH) {
     Stage = 2;
     digitalWrite(7, HIGH);
@@ -105,15 +105,15 @@ void ControlEngineMan() {
 
 unsigned long startTime = 0;  // variable to store the start time of each timer
 int currentStep = 0;          // variable to keep track of the current step
-bool speedValLocked = false;
+bool speedValLocked = false;  // locks the speed so that the engine doesnt stop because the knob is too low
 
 void ControlEngineAut() {
   unsigned long currentTime = millis();
-  if (Stage == 0) {
+  if (Stage == 0) {//waiting for the start button
     if (digitalRead(12) == HIGH) {
       Stage = 1;
     }
-  } else if (Stage == 1) {
+  } else if (Stage == 1) {// starting up stage
     if (currentStep == 0) {
       // start air at 50 percent
       AirServo.write(90);
@@ -137,20 +137,20 @@ void ControlEngineAut() {
       Stage = 2;
       startTime = currentTime;
     }
-  } else if (Stage == 2) {
+  } else if (Stage == 2) {//the engine is on
     if (!speedValLocked && SpeedVal < 80) {
       SpeedVal = 80;
     } else {
       speedValLocked = true;
     }
-    if (currentTime - startTime <= 60000) {
+    if (currentTime - startTime <= 60000) {// it will run for 60 secounds 
       int SpeedValTmpVal = map(SpeedVal, 0, 100, 0, 180);
       AirServo.write(SpeedValTmpVal);
     } else {
       Stage = 3;
     }
   }
-  else if (Stage == 3) {
+  else if (Stage == 3) {// the engine is cooling off until its below 50 degrees
     if (Temperature > 50) {
       AirServo.write(180);
       GasServo.write(0);

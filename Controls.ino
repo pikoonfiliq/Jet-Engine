@@ -1,4 +1,4 @@
-
+#include <Servo.h>
 Servo AirServo;
 Servo GasServo;
 
@@ -85,6 +85,9 @@ void PinsINIT() {
   AirServo.write(0);
   pinMode(12, INPUT);
   pinMode(7, OUTPUT);
+  pinMode(2, OUTPUT); //trigger pin
+	pinMode(3, INPUT);  //echo pin
+
 }
 
 void ControlEngineMan() {
